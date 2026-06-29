@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>勤怠管理システム - 管理者ページ (セキュリティ改修版)</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+  <div class="admin-container">
+    <h1>勤怠管理システム 管理者画面</h1>
+
+    <!-- 1. 管理者認証セクション -->
+    <div id="authSection" class="card">
+      <h2>管理者認証</h2>
+      <div class="input-group">
+        <label for="adminPassword">パスワードを入力してください</label>
+        <input type="password" id="adminPassword" placeholder="パスワード">
+      </div>
+      <button class="btn btn-primary" onclick="checkPassword()">認証する</button>
+    </div>
+
+    <!-- 2. 認証成功後に表示されるメインコンテンツ -->
+    <div id="mainContent" class="hidden">
+
+      <div class="grid-2">
+        <!-- 社員登録 (暗証番号PIN項目を新規追加) -->
+        <div class="card">
+          <h2>社員の新規登録</h2>
+          <div class="input-group">
+            <label for="newEmpId">社員ID</label>
+            <input type="text" id="newEmpId" placeholder="例: E004">
+          </div>
+          <div class="input-group">
+            <label for="newEmpName">社員名</label>
+            <input type="text" id="newEmpName" placeholder="例: 山田 太郎">
+          </div>
+          <!-- 【セキュリティ改修】新規登録時にPINを設定できるように追加 -->
+          <div class="input-group">
+            <label for="newEmpPin">暗証番号 (4桁のPIN)</label>
+            <input type="password" id="newEmpPin" pattern="[0-9]{4}" inputmode="numeric" maxlength="4" placeholder="例: 1234">
+          </div>
+          <button class="btn btn-primary" onclick="addEmployee()">社員を登録</button>
+        </div>
+
+        <div class="card">
+          <h2>現場の新規登録</h2>
+          <div class="grid-2">
+            <div class="input-group">
+              <label for="newSiteId">現場ID</label>
+              <input type="text" id="newSiteId" placeholder="例: GENBA002">
+            </div>
+            <div class="input-group">
+              <label for="newSiteRadius">許容半径(m)</label>
+              <input type="number" id="newSiteRadius" value="300">
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="newSiteName">現場名</label>
+            <input type="text" id="newSiteName" placeholder="例: 横浜リノベーション現場">
+          </div>
+          <div class="input-group">
+            <label for="newSiteAddress">住所</label>
+            <input type="text" id="newSiteAddress" placeholder="例: 神奈川県横浜市中区...">
+          </div>
+          <button class="btn btn-primary" onclick="addSite()">現場を登録</button>
+        </div>
+      </div>
+
+      <div id="editModal" class="modal hidden">
+        <div class="modal-content card">
+          <h2>打刻データの修正 (行番号: <span id="editRowNo"></span>)</h2>
+          <input type="hidden" id="editRowIndex">
+
+          <div class="input-group">
+            <label for="editType">打刻種別</label>
+            <select id="editType">
+              <option value="出勤">出勤</option>
+              <option value="退勤">退勤</option>
+              <option value="早退">早退</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="editResult">判定結果</label>
+            <select id="editResult">
+              <option value="成功">成功</option>
+              <option value="距離外エラー">距離外エラー</option>
+              <option value="時間外エラー">時間外エラー</option>
+              <option value="現場設定エラー">現場設定エラー</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="editReason">備考（早退理由・修正理由など）</label>
+            <input type="text" id="editReason">
+          </div>
+
+          <div class="button-group">
+            <button class="btn btn-primary" onclick="saveRowUpdate()">修正を保存</button>
+            <button class="btn btn-secondary" onclick="closeEditModal()">キャンセル</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card margin-top">
+        <h2>打刻履歴一覧（データ修正・確認）</h2>
+        <div class="table-responsive">
+          <table id="historyTable">
+            <thead>
+              <tr>
+                <th>日時</th>
+                <th>社員ID</th>
+                <th>名前</th>
+                <th>現場ID</th>
+                <th>種別</th>
+                <th>判定</th>
+                <th>距離</th>
+                <th>備考</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script src="admin.js"></script>
+</body>
+
+</html>
