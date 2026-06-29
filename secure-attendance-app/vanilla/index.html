@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>現場打刻システム (セキュリティ改修版)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>現場勤怠打刻</h1>
+    
+    <div class="input-group">
+      <label for="empId">お名前</label>
+      <select id="empId" required>
+        <option value="">-- 名前を選択してください --</option>
+      </select>
+    </div>
+
+    <!-- 【セキュリティ改修】なりすまし防止の4桁PIN入力欄を追加 -->
+    <div class="input-group">
+      <label for="empPin">暗証番号 (4桁のPIN)</label>
+      <input type="password" id="empPin" pattern="[0-9]{4}" inputmode="numeric" maxlength="4" placeholder="4桁の数字を入力" required>
+    </div>
+
+    <div class="input-group">
+      <label for="siteId">勤務現場</label>
+      <select id="siteId" required>
+        <option value="">-- 現場を選択してください --</option>
+      </select>
+    </div>
+
+    <div class="button-group">
+      <button id="btn-in" class="btn btn-primary" onclick="handleStamp('出勤')">出勤</button>
+      <button id="btn-out" class="btn btn-secondary" onclick="handleStamp('退勤')">退勤</button>
+      <button id="btn-early" class="btn btn-warning" onclick="handleStamp('早退')">早退</button>
+    </div>
+
+    <div id="statusArea" class="status-area"></div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

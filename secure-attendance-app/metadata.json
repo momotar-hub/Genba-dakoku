@@ -1,0 +1,6 @@
+{
+  "name": "Secure Attendance App",
+  "description": "セキュリティ脆弱性を改修した、GAS（Google Apps Script）連携の現場勤怠打刻・管理者管理システム。APIトークン保護、PIN認証、管理者パスワードのバックエンド検証を実装しています。",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
